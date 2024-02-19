@@ -5,46 +5,41 @@ function ExchangeRateTable() {
   const [exchangeRates, setExchangeRates] = useState([]);
   const [filter, setFilter] = useState('');
 
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        // Fetch exchange rates
-        const exchangeRatesResponse = await axios.get(
-          'https://api.currencyfreaks.com/latest?apikey=b9a15d23a4424ef7b6b131e2d7685475&symbols=GBP,EUR,USD'
-        );
-        const { rates } = exchangeRatesResponse.data;
-
-        // Log currency codes extracted from exchange rates data
-        console.log('Currency Codes:', Object.keys(rates));
-
-        // Fetch country data
-        const countryDataResponse = await axios.get(
-          'https://restcountries.com/v3.1/all'
-        );
-        const countryData = countryDataResponse.data;
-
-        // Map exchange rates with country names
-        const formattedRates = Object.keys(rates).map(currency => {
-          // Find country info by currency code
-          const countryInfo = countryData.find(country => country.currencies && country.currencies[0] && country.currencies[0].code === currency);
-          
-          // If country info is found, extract country name
-          const countryName = countryInfo ? countryInfo.name.common : 'Unknown';
-          
+  const fetchAllData = () => {
+    const endpoints = [
+      'https://api.currencyfreaks.com/latest?apikey=d2d6339b576a429a9b4de6c5e04512ac&symbols=GBP,EUR,USD',
+      'https://api.currencyfreaks.com/v2.0/supported-currencies'
+    ];
+  
+    Promise.all(endpoints.map(endpoint => axios.get(endpoint)))
+      .then(responses => {
+        const exchangeRatesResponse = responses[0].data;
+        const countryDataResponse = responses[1].data;
+  
+        console.log('Exchange Rates API response:', exchangeRatesResponse);
+        console.log('Country Data API response:', countryDataResponse);
+        
+        const exchangeRatesData = exchangeRatesResponse.rates;
+  
+        const formattedRates = Object.keys(exchangeRatesData).map(currency => {
+          const countryName = countryDataResponse[currency]?.country || 'Unknown';
+  
           return {
             country: countryName,
             currency,
-            rate: rates[currency],
+            rate: exchangeRatesData[currency]
           };
         });
-
+  
         setExchangeRates(formattedRates);
-      } catch (error) {
+      })
+      .catch(error => {
         console.error('Error fetching data:', error);
-      }
-    }
+      });
+  };
 
-    fetchData();
+  useEffect(() => {
+    fetchAllData();
   }, []);
 
   const filteredRates = exchangeRates.filter(rate =>

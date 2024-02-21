@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-function ExchangeRateTable() {
+export function ExchangeRateTable() {
   const [exchangeRates, setExchangeRates] = useState([]);
   const [filter, setFilter] = useState('');
 
@@ -22,12 +22,11 @@ function ExchangeRateTable() {
         const exchangeRatesData = exchangeRatesResponse.rates;
   
         const formattedRates = Object.keys(exchangeRatesData).map(currency => {
-          const countryName = countryDataResponse[currency]?.country || 'Unknown';
-  
+          const countryName = countryDataResponse.supportedCurrenciesMap[currency]?.currencyName || 'Unknown';
           return {
-            country: countryName,
-            currency,
-            rate: exchangeRatesData[currency]
+              country: countryName,
+              currency,
+              rate: exchangeRatesData[currency]
           };
         });
   

@@ -26,7 +26,7 @@ const StyledTable = styled.table`
   }
 
   tr {
-    border-bottom: 1px solid #212644
+    border-bottom: 1px solid #212644;
   }
 
   td {
@@ -39,7 +39,7 @@ const MobileContainer = styled.div`
 
   h3 {
     background-color: #212644;
-    color: #ffffff;
+    color: #fff;
     padding: 0.5rem;
     margin: 0;
   }
@@ -49,10 +49,9 @@ const MobileContainer = styled.div`
   }
 `;
 
-
 const FilterContainer = styled.div`
     padding: 0.5rem;
-    border-bottom: 1px solid #212644
+    border-bottom: 1px solid #212644;
 `;
 
 const InputContainer = styled.div`
@@ -62,7 +61,7 @@ const InputContainer = styled.div`
 
 const StyledInput = styled.input`
   padding: 0.5rem;
-  border: 1px solid #ccc;
+  border: 1px solid #212644;
   border-radius: 4px;
   width: 100%;
   max-width: 300px; 
@@ -90,7 +89,7 @@ export function ExchangeRateTable() {
         // Log API responses
         console.log('Exchange Rates API response:', exchangeRatesResponse);
         console.log('Country Data API response:', countryDataResponse);
-        
+
         // Extract exchange rates data
         const exchangeRatesData = exchangeRatesResponse.rates;
 
@@ -98,9 +97,9 @@ export function ExchangeRateTable() {
         const formattedRates = Object.keys(exchangeRatesData).map(currency => {
           const countryName = countryDataResponse.supportedCurrenciesMap[currency]?.currencyName || 'Unknown';
           return {
-              country: countryName,
-              currency,
-              rate: exchangeRatesData[currency]
+            country: countryName,
+            currency,
+            rate: exchangeRatesData[currency]
           };
         });
 
@@ -137,8 +136,8 @@ export function ExchangeRateTable() {
         />
       </InputContainer>
 
-       {/* Mobile header */}
-       <MobileContainer>
+      {/* Mobile header */}
+      <MobileContainer>
         <h3>Currencies</h3>
         <div>
           {filteredRates.map(rate => (
@@ -155,24 +154,24 @@ export function ExchangeRateTable() {
       {/* Exchange rate table */}
       <TableContainer>
         <StyledTable>
-        <thead>
-          {/* Table headers */}
-          <tr>
-            <th>Country</th>
-            <th>Currency</th>
-            <th>Exchange Rate</th>
-          </tr>
-        </thead>
-        <tbody>
-          {/* Render filtered rates */}
-          {filteredRates.map(rate => (
-            <tr key={rate.currency}>
-              <td>{rate.country}</td>
-              <td>{rate.currency}</td>
-              <td>{rate.rate}</td>
+          <thead>
+            {/* Table headers */}
+            <tr>
+              <th>Country</th>
+              <th>Currency</th>
+              <th>Exchange Rate</th>
             </tr>
-          ))}
-        </tbody>
+          </thead>
+          <tbody>
+            {/* Render filtered rates */}
+            {filteredRates.map(rate => (
+              <tr key={rate.currency}>
+                <td>{rate.country}</td>
+                <td>{rate.currency}</td>
+                <td>{rate.rate}</td>
+              </tr>
+            ))}
+          </tbody>
         </StyledTable>
       </TableContainer>
     </div>

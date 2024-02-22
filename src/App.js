@@ -15,18 +15,18 @@ const StyledTable = styled.table`
   width: 100%;
   border-collapse: collapse;
 
+  tr {
+    border-bottom: 1px solid #212644;
+  }
+
   th, td {
-    padding: 8px;
+    padding: 0.5rem;
     text-align: left;
   }
 
   th {
     background-color: #212644;
     color: #ffffff;
-  }
-
-  tr {
-    border-bottom: 1px solid #212644;
   }
 
   td {
@@ -56,13 +56,13 @@ const FilterContainer = styled.div`
 
 const InputContainer = styled.div`
   text-align: center;
-  margin: 15px 0;
+  margin: 0.9375rem 0;
 `;
 
 const StyledInput = styled.input`
   padding: 0.5rem;
   border: 1px solid #212644;
-  border-radius: 4px;
+  border-radius: 5px;
   width: 100%;
   max-width: 300px; 
 `;

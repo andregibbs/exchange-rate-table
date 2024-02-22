@@ -9,7 +9,7 @@ describe('ExchangeRateTable component', () => {
 
   it('renders input field and table headers', () => {
     const { getByPlaceholderText, getByText } = render(<ExchangeRateTable />);
-    expect(getByPlaceholderText('What is your destination country or Currency')).toBeInTheDocument();
+    expect(getByPlaceholderText('What is your destination Country or Currency')).toBeInTheDocument();
     expect(getByText('Country')).toBeInTheDocument();
     expect(getByText('Currency')).toBeInTheDocument();
     expect(getByText('Exchange Rate')).toBeInTheDocument();

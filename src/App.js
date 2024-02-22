@@ -1,5 +1,72 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import styled from 'styled-components';
+
+const TableContainer = styled.div`
+  overflow-x: auto;
+  max-width: 100%; 
+
+  @media (max-width: 768px) {
+    display: none; 
+  }
+`;
+
+const StyledTable = styled.table`
+  width: 100%;
+  border-collapse: collapse;
+
+  th, td {
+    padding: 8px;
+    text-align: left;
+  }
+
+  th {
+    background-color: #212644;
+    color: #ffffff;
+  }
+
+  tr {
+    border-bottom: 1px solid #212644
+  }
+
+  td {
+    color: #475467;
+  }
+`;
+
+const MobileContainer = styled.div`
+  display: none;
+
+  h3 {
+    background-color: #212644;
+    color: #ffffff;
+    padding: 0.5rem;
+    margin: 0;
+  }
+
+  @media (max-width: 768px) {
+    display: block; 
+  }
+`;
+
+
+const FilterContainer = styled.div`
+    padding: 0.5rem;
+    border-bottom: 1px solid #212644
+`;
+
+const InputContainer = styled.div`
+  text-align: center;
+  margin: 15px 0;
+`;
+
+const StyledInput = styled.input`
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 100%;
+  max-width: 300px; 
+`;
 
 export function ExchangeRateTable() {
   // State variables
@@ -59,18 +126,38 @@ export function ExchangeRateTable() {
 
   return (
     <div>
+
       {/* Filter input */}
-      <input
-        type="text"
-        placeholder="What is your destination country or Currency"
-        value={filter}
-        onChange={e => setFilter(e.target.value)}
-      />
+      <InputContainer>
+        <StyledInput
+          type="text"
+          placeholder="What is your destination Country or Currency"
+          value={filter}
+          onChange={e => setFilter(e.target.value)}
+        />
+      </InputContainer>
+
+       {/* Mobile header */}
+       <MobileContainer>
+        <h3>Currencies</h3>
+        <div>
+          {filteredRates.map(rate => (
+            <FilterContainer key={rate.currency}>
+              <div>{rate.country}</div>
+              <div>{rate.currency}</div>
+              <div>{rate.rate}</div>
+            </FilterContainer>
+          ))}
+        </div>
+      </MobileContainer>
+
+
       {/* Exchange rate table */}
-      <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+      <TableContainer>
+        <StyledTable>
         <thead>
           {/* Table headers */}
-          <tr style={{ backgroundColor: '#212644', color: '#ffffff' }}>
+          <tr>
             <th>Country</th>
             <th>Currency</th>
             <th>Exchange Rate</th>
@@ -80,13 +167,14 @@ export function ExchangeRateTable() {
           {/* Render filtered rates */}
           {filteredRates.map(rate => (
             <tr key={rate.currency}>
-              <td style={{ color: '#475467' }}>{rate.country}</td>
-              <td style={{ color: '#475467' }}>{rate.currency}</td>
-              <td style={{ color: '#475467' }}>{rate.rate}</td>
+              <td>{rate.country}</td>
+              <td>{rate.currency}</td>
+              <td>{rate.rate}</td>
             </tr>
           ))}
         </tbody>
-      </table>
+        </StyledTable>
+      </TableContainer>
     </div>
   );
 }
